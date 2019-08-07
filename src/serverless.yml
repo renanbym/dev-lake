@@ -1,0 +1,55 @@
+service: dev-lake
+
+provider:
+  name: aws
+  profile: renanbym
+
+  region: us-east-1
+  memorySize: 128
+  timeout: 30
+  versionFunctions: false
+
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action: 'lambda:InvokeFunction'
+      Resouce: '*'
+
+    - Effect: "Allow"
+      Resource: "*"
+      Action: "sqs:*"
+
+    - Effect: Allow
+      Action: es:*
+      Resource: '*'
+
+package:
+  enviroment: dev
+
+functions:
+
+  ping:
+    handler: services/ping.handler
+    events:
+      - http:
+          path: /ping
+          method: get
+          cors: true
+          request:
+            parameters:
+              paths:
+                id: true
+              headers:
+                Authorization: true
+             
+  build:
+    runtime: nodejs8.10
+    handler: services/build.handler
+
+  searchGoogle:
+    runtime: nodejs8.10
+    handler: services/search-google.handler
+
+  updateProfile:
+    runtime: nodejs8.10
+    handler: services/update-profile.handler
+
