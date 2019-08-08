@@ -1,21 +1,43 @@
-# API de Perfis do Linkedin com Ranking
+# API de Perfis do Linkedin com Ranking - DevLake
 
+- Pegar perfis baseado na busca do usuario
+- Mostrar perfis com rankeamento
+- Criar agenda com contato (email, telemovel) dos perfis
 
 ## Infra
 
-- [ ] Elasticsearch, irá facilitar o rankeamendo 
-- [ ] event-driven (sqs, sns, eventbridge, kafka)
+### MVP 
+
+- [x] MongoDB Atlas
+- [x] AWS
+- [x] Lambas
+- [ ] SQS
 - [ ] React no S3
-- [ ] expressjs, hapi, serverless (middy)
-- [ ] jsonschema, standardjs.com
-- [ ] epsagon, para logs
 
+### Nice to have
 
-## Aplicação
+- [ ] CD Github
+- [ ] Elasticsearch, irá facilitar o rankeamendo
+- [ ] Kafka
+- [ ] Middy
+- [ ] standardjs
+- [ ] jsonschema
+- [ ] epsagon
 
-- Pegar perfis baseado na busca do usuario
+## Features
 
-## Datalake
+- [x] Serverless
+- [ ] Connection
+- [ ] Models
+- [ ] Functions
+
+### API
+
+- [ ] Cadastro de pesquisa
+- [ ] Lista das pesquisas com status
+- [ ] Retorno de pesquisa rankeada
+
+### Datalake
 
 - [ ] Fazer buscar no google e salvar as 100 primeiras URL's linkedin
 - [ ] Garantir que a URL não seja duplicada
@@ -25,10 +47,11 @@
 - [ ] Criar um ranking de educação profissional
 - [ ] Criar um ranking de taxa de permanencia
 
-## API
+### Front
 
 - [ ] Cadastro de pesquisa
-- [ ] Lista das pesquisas com status
-- [ ] Retorno de pesquisa rankeada
-
-## Front
+- [ ] Lista de pesquisas com status
+- [ ] Lista de perfis
+- [ ] Detalhe do perfil com contato
+- [ ] Perfis excluidos da pesquisa
+- [ ] Perfis selecionadso da pesquisa
