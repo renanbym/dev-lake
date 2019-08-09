@@ -3,7 +3,8 @@ service: dev-lake
 provider:
   name: aws
   profile: renanbym
-
+  runtime: nodejs10.x
+ 
   region: us-east-1
   memorySize: 128
   timeout: 30
@@ -28,6 +29,16 @@ provider:
       Resource: 
         - '*'
 
+plugins:
+  - serverless-prune-plugin
+  - serverless-offline
+
+custom:
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 3
+
 package:
   enviroment: dev
 
@@ -48,14 +59,11 @@ functions:
                 Authorization: true
              
   build:
-    runtime: nodejs8.10
-    handler: services/build.handler
+    handler: build.handler
 
   searchGoogle:
-    runtime: nodejs8.10
-    handler: services/search-google.handler
+    handler: search-google.handler
 
   updateProfile:
-    runtime: nodejs8.10
-    handler: services/update-profile.handler
+    handler: update-profile.handler
 
