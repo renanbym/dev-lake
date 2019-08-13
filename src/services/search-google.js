@@ -1,6 +1,7 @@
 const google = require('google-it')
 const { connect } = require('../_core/connection')
 const Perfil = require('../models/Perfil')
+const { requestQueue } = require('../_core/aws-build-request');
 
 const parseBody = (event) => {
 
@@ -19,11 +20,14 @@ const handler = async (event, context, callback) => {
     const data = parseBody(event);
     await connect();
 
-    const search = await google({ 'no-display': true, 'only-urls': true, 'limit': 10, 'query': `site:linkedin.com/in/ AND "${data.position}" AND "${data.location}"` });
+    const search = await google({ 'no-display': true, 'only-urls': true, 'limit': 1, 'query': `site:linkedin.com/in/ AND "${data.position}" AND "${data.location}"` });
 
     const create = async (url) => {
-      await Perfil.update({ url }, { url, status: 'created' }, { upsert: true });
+      const dataPerfil = await Perfil.update({ url }, { url, status: 'created' }, { upsert: true, new: true });
+      console.log(dataPerfil);
+      await requestQueue({ id: dataPerfil._id }, 'updateProfileQueue');
     }
+
 
     for (const url of search) {
 

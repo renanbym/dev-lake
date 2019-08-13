@@ -4,21 +4,12 @@ const { connect } = require('../_core/connection')
 const Perfil = require('../models/Perfil')
 const { ObjectId } = require('mongodb')
 
-const parseBody = (event) => {
-
-  if (event.isOffline) {
-    return event
-  } else {
-    return JSON.parse(event.body)
-  }
-
-}
 
 const handler = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   try {
-    const data = parseBody(event)
+    const data = JSON.parse(event.Records[0].body);
 
     await connect()
 

@@ -110,4 +110,4 @@ const deleteMessage = (event, ReceiptHandle, serviceOveride = null) => {
 
 };
 
-export { buildSns, requestLambda, requestQueue, deleteMessage };
+module.exports = { buildSns, requestLambda, requestQueue, deleteMessage };

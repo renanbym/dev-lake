@@ -66,6 +66,12 @@ functions:
 
   updateProfile:
     handler: update-profile.handler
+    timeout: 300 
+    reservedConcurrency: 20
+    events:
+      - sqs:
+          arn: "updateProfileQueue"
+          batchSize: 1  
 
   getOneProfile:
     handler: get-profile.handler
@@ -86,3 +92,12 @@ functions:
           path: /
           method: get
           cors: true
+
+resources:
+  Resources:
+
+    ProcessCreateLists:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "updateProfileQueue"
+        VisibilityTimeout: 300
