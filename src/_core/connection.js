@@ -1,29 +1,71 @@
 const config = require('../../config')
 const mongoose = require('mongoose');
 
-let cachedDb = null;
+let isConnected = false;
+let connection;
 
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb://user-dev-lake:wtrY1UeUkSG9i3ax@devlake-shard-00-00-r1ynp.mongodb.net:27017,devlake-shard-00-01-r1ynp.mongodb.net:27017,devlake-shard-00-02-r1ynp.mongodb.net:27017/test?ssl=true&replicaSet=DevLake-shard-0&authSource=admin&retryWrites=true&w=majority";
-MongoClient.connect(uri, function (err, client) {
-    console.log(err);
-    console.log(client);
+const replacerRegexStringify = (name, val) => {
+    // // convert RegExp to string
+    if (val && val.constructor === RegExp) {
+        return val.toString();
+    } else if (name === 'str') {
+        return undefined;
+    }
+    return val;
+};
+
+const customLogger = (coll, op, doc, proj) => {
+    process.stdout.write(`${coll}.${op}(${JSON.stringify(doc, replacerRegexStringify)}`);
+    if (proj) {
+        process.stdout.write(`,${JSON.stringify(proj, replacerRegexStringify)})\n`);
+    } else {
+        process.stdout.write(')\n');
+    }
+};
+
+
+const connect = (verbose = false) => new Promise(async (resolve, reject) => {
+
+    try {
+        if (verbose) {
+            mongoose.set('debug', customLogger);
+        }
+
+        if (isConnected) {
+            console.log('===> Aproveitando conexao');
+            return resolve(connection);
+        }
+
+
+        connection = await mongoose.connect(config.mongodb.uri, {
+            reconnectTries: Number.MAX_VALUE,
+            reconnectInterval: 1000
+        });
+
+        if (connection === mongoose) {
+            isConnected = true;
+            return resolve(connection);
+        }
+
+        return reject('error');
+    } catch (e) {
+        console.log('===> connect error', e);
+        return reject(e);
+    }
 });
 
-module.exports = connectToDatabase = () => {
-    console.log('=> connect to database', cachedDb);
-
-    if (cachedDb) {
-        console.log('=> using cached database instance');
-        return Promise.resolve(cachedDb);
+const disconnect = () => new Promise(async (resolve, reject) => {
+    try {
+        mongoose.connection.close(() => {
+            isConnected = false;
+            console.log('===> Desconectando conexao');
+            resolve();
+        });
+    } catch (e) {
+        console.log('===> disconnect error', e);
+        return reject(e);
     }
+});
 
-    return mongoose.createConnection(config.mongodb.uri)
-        .then(db => {
-            console.log(db);
-            cachedDb = db;
-            return cachedDb;
-        }).catch(err => {
-            console.log(err);
-        })
-}
+
+module.exports = { connect, disconnect, mongoose };
