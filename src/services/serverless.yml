@@ -67,3 +67,22 @@ functions:
   updateProfile:
     handler: update-profile.handler
 
+  getOneProfile:
+    handler: get-profile.handler
+    events:
+      - http: 
+          path: /{id}
+          method: get
+          cors: true
+          request:
+            parameters:
+              paths:
+                id: true
+
+  getAllProfile:
+    handler: get-profile.handler
+    events:
+      - http: 
+          path: /
+          method: get
+          cors: true

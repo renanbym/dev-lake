@@ -18,18 +18,31 @@ const handler = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   try {
-    const data = parseBody(event)
+    let search = {};
 
     await connect()
 
-    let perfilData = await Perfil.findById(new ObjectId(data.id))
+    if (event.pathParameters) {
+      if (event.pathParameters.id) {
+        search._id = new ObjectId(event.pathParameters.id);
+      }
+    }
 
-    const profileScraper = await scrapedin(config.linkedin)
-    const profile = await profileScraper(perfilData.url)
+    let result;
 
-    perfilData = await Perfil.findOneAndUpdate({ _id: new ObjectId(data.id) }, { $set: Object.assign({}, profile, profile.profileAlternative), status: 'updated' }, { new: true });
+    if (search._id) {
+      result = await Perfil.find(search);
+      if (result.length > 0) {
+        result = result[0];
+      } else {
+        return callback(null, { statusCode: 400, body: JSON.stringify({ error: 'error' }) })
+      }
+    } else {
+      result = await Perfil.find(search);
+    }
 
-    return callback(null, { statusCode: 200, body: JSON.stringify(perfilData) })
+
+    return callback(null, { statusCode: 200, body: JSON.stringify(result) })
   } catch (error) {
     return callback(null, { statusCode: 400, body: JSON.stringify({ error: error.message }) })
   }
