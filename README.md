@@ -11,7 +11,7 @@
 - [x] MongoDB Atlas
 - [x] AWS
 - [x] Lambas
-- [ ] SQS
+- [x] SQS
 - [ ] React no S3
 
 ### Nice to have
@@ -27,25 +27,28 @@
 ## Features
 
 - [x] Serverless
-- [ ] Connection
-- [ ] Models
-- [ ] Functions
-
-### API
-
-- [ ] Cadastro de pesquisa
-- [ ] Lista das pesquisas com status
-- [ ] Retorno de pesquisa rankeada
-
-### Datalake
-
-- [ ] Fazer buscar no google e salvar as 100 primeiras URL's linkedin
-- [ ] Garantir que a URL não seja duplicada
-- [ ] Garantir que somente url do linkedin seja cadastrada
-- [ ] Atualizar urls com informações do linkedin
+- [x] Connection
+- [x] Models
+- [x] Functions
 - [ ] Criar um ranking de experiencia profissional
 - [ ] Criar um ranking de educação profissional
 - [ ] Criar um ranking de taxa de permanencia
+
+### API
+
+- [x] Cadastro de pesquisa
+- [ ] Lista das pesquisas com status
+- [x] Lista Perfils
+- [x] Detalhe Perfil
+- [ ] Retorno de perfil com ranking
+
+### Datalake
+
+- [x] Fazer buscar no google e salvar as 100 primeiras URL's linkedin
+- [x] Garantir que a URL não seja duplicada
+- [x] Garantir que somente url do linkedin seja cadastrada
+- [x] Atualizar urls com informações do linkedin
+
 
 ### Front
 

@@ -18,7 +18,11 @@ const handler = async (event, context, callback) => {
     const profileScraper = await scrapedin(config.linkedin)
     const profile = await profileScraper(perfilData.url)
 
-    perfilData = await Perfil.findOneAndUpdate({ _id: new ObjectId(data.id) }, { $set: Object.assign({}, profile, profile.profileAlternative), status: 'updated' }, { new: true });
+    perfilData = await Perfil.findOneAndUpdate(
+      { _id: new ObjectId(data.id) },
+      { $set: Object.assign({}, profile, profile.profileAlternative), status: 'updated' },
+      { new: true }
+    );
 
     return callback(null, { statusCode: 200, body: JSON.stringify(perfilData) })
   } catch (error) {

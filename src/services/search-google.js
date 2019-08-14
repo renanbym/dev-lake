@@ -20,11 +20,14 @@ const handler = async (event, context, callback) => {
     const data = parseBody(event);
     await connect();
 
-    const search = await google({ 'no-display': true, 'only-urls': true, 'limit': 1, 'query': `site:linkedin.com/in/ AND "${data.position}" AND "${data.location}"` });
+    const search = await google({ 'no-display': true, 'only-urls': true, 'limit': 100, 'query': `site:linkedin.com/in/ AND "${data.position}" AND "${data.location}"` });
 
     const create = async (url) => {
-      const dataPerfil = await Perfil.update({ url }, { url, status: 'created' }, { upsert: true, new: true });
-      console.log(dataPerfil);
+      const dataPerfil = await Perfil.update(
+        { url },
+        { $set: { url, status: 'created' }, $addToSet: { search: { position: data.position, location: data.location } } },
+        { upsert: true, new: true }
+      );
       await requestQueue({ id: dataPerfil._id }, 'updateProfileQueue');
     }
 
@@ -40,7 +43,6 @@ const handler = async (event, context, callback) => {
 
     return callback(null, { statusCode: 200, body: JSON.stringify({ search }) });
   } catch (error) {
-    console.log(error);
     return callback(null, { statusCode: 400, body: JSON.stringify({ error: error.message }) });
   }
 

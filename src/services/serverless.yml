@@ -93,6 +93,9 @@ functions:
           method: get
           cors: true
 
+  rankingPermanencia:
+    handler: ranking-permanencia.handler
+
 resources:
   Resources:
 

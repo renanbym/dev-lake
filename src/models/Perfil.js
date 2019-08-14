@@ -35,6 +35,13 @@ const modelSchema = new mongoose.Schema({
         title: String,
         count: Number
     }],
+    search: [
+        {
+            _id: false,
+            position: String,
+            location: String
+        }
+    ],
     date: { type: Date, default: Date.now },
     update: { type: Date, default: Date.now },
 })
