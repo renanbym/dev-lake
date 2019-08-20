@@ -7,16 +7,15 @@ const handler = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   try {
-    // const data = JSON.parse(event.Records[0].body)
+    const data = event.Records[0].body
 
     await connect()
-
-    // const perfilData = await Perfil.findById(new ObjectId(data.id))
-    let perfilData = await Perfil.findById(new ObjectId("5d52c6c5dbc1b5e785a9309a"))
+   
+    let perfilData = await Perfil.findById(new ObjectId(data.id))
 
     const positions = perfilData.positions
 
-    const ranking = [];
+    const ranking = []
 
     for (const position of positions) {
 
@@ -30,14 +29,14 @@ const handler = async (event, context, callback) => {
       const foundBegin = begin.match(/^([A-Za-z]{3}).*([0-9]{4})/i)
       const dateBegin = new Date(`${foundBegin[1]} ${foundBegin[2]}`)
 
-      let dateEnd = new Date();
+      let dateEnd = new Date()
 
       if (!/moment/.test(end)) {
         const foundEnd = end.match(/^([A-Za-z]{3}).*([0-9]{4})/i)
         dateEnd = new Date(`${foundEnd[1]} ${foundEnd[2]}`)
       }
 
-      const difference = differenceInDays(dateEnd, dateBegin);
+      const difference = differenceInDays(dateEnd, dateBegin)
 
       ranking.push({
         begin: dateBegin,
@@ -48,12 +47,17 @@ const handler = async (event, context, callback) => {
 
     }
 
-    const dayLimit = 2;
-    const ran = ranking.reduce((acc, cur) => acc += cur.avgDifference, 0) / ranking.length;
+    const dayLimit = 2
+    const ran = ranking.reduce((acc, cur) => acc += cur.avgDifference, 0) / ranking.length
     const avgRanking = (ran * 5) / dayLimit
 
+    perfilData = await Perfil.findOneAndUpdate(
+      { _id: new ObjectId(data.id) },
+      { $set: { ranking: { permanencia: avgRanking } } },
+      { new: true }
+    );
 
-    return callback(null, { statusCode: 200, body: { ranking, avgRanking } })
+    return callback(null, { statusCode: 200, body: perfilData })
   } catch (error) {
     return callback(null, { statusCode: 400, body: JSON.stringify({ error: error.message }) })
   }

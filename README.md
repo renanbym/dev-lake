@@ -32,7 +32,7 @@
 - [x] Functions
 - [ ] Criar um ranking de experiencia profissional
 - [ ] Criar um ranking de educação profissional
-- [ ] Criar um ranking de taxa de permanencia
+- [x] Criar um ranking de taxa de permanencia
 
 ### API
 

@@ -42,6 +42,10 @@ const modelSchema = new mongoose.Schema({
             location: String
         }
     ],
+    ranking: {
+        _id: false,
+        permanencia: String,
+    },
     date: { type: Date, default: Date.now },
     update: { type: Date, default: Date.now },
 })

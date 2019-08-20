@@ -1,5 +1,3 @@
-const scrapedin = require('scrapedin')
-const config = require('../../config')
 const { connect } = require('../_core/connection')
 const Perfil = require('../models/Perfil')
 const { ObjectId } = require('mongodb')
