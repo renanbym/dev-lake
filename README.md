@@ -12,6 +12,7 @@
 - [x] AWS
 - [x] Lambas
 - [x] SQS
+- [ ] SSM
 - [ ] React no S3
 
 ### Nice to have
