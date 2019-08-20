@@ -1,6 +1,5 @@
-const config = require('../../config')
 const mongoose = require('mongoose');
-
+const { getSecret } = require('./secrets-storage');
 let isConnected = false;
 let connection;
 
@@ -36,8 +35,9 @@ const connect = (verbose = false) => new Promise(async (resolve, reject) => {
             return resolve(connection);
         }
 
-
-        connection = await mongoose.connect(config.mongodb.uri, {
+        const connectionString = await getSecret('mongodb_uri')
+        console.log(connectionString)
+        connection = await mongoose.connect(connectionString, {
             reconnectTries: Number.MAX_VALUE,
             reconnectInterval: 1000
         });

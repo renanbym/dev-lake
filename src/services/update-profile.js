@@ -1,8 +1,8 @@
 const scrapedin = require('scrapedin')
-const config = require('../../config')
-const { connect } = require('../_core/connection')
-const Perfil = require('../models/Perfil')
+const { connect } = require('./_core/connection')
+const Perfil = require('./models/Perfil')
 const { ObjectId } = require('mongodb')
+const { getSecret } = require('./secrets-storage');
 
 
 const handler = async (event, context, callback) => {
@@ -15,7 +15,10 @@ const handler = async (event, context, callback) => {
 
     let perfilData = await Perfil.findById(new ObjectId(data.id))
 
-    const profileScraper = await scrapedin(config.linkedin)
+    const email = await getSecret('linkedin_email')
+    const password = await getSecret('linkedin_password')
+
+    const profileScraper = await scrapedin({ email, password })
     const profile = await profileScraper(perfilData.url)
 
     perfilData = await Perfil.findOneAndUpdate(

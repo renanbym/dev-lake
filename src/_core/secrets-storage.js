@@ -1,5 +1,3 @@
-import { SecretError } from './custom-errors';
-
 const AWS = require('aws-sdk');
 
 const ssm = new AWS.SSM({ region: process.env.AWS_REGION });
@@ -14,16 +12,14 @@ const getAll = () => new Promise((resolve, reject) => {
     secrets = {};
 
     try {
-        const environment = process.env.STAGE;
         const params = {
-            Path: `/siemens/${environment}`,
             Recursive: true,
             WithDecryption: true
         };
 
         const getParameters = async (ssmParams) => {
             const result = await ssm.getParametersByPath(ssmParams).promise();
-
+            console.log(result);
             for (const p of result.Parameters) {
                 const key = p.Name.replace(`${ssmParams.Path}/`, '');
                 secrets[key] = p.Value;
@@ -40,7 +36,7 @@ const getAll = () => new Promise((resolve, reject) => {
 
         return getParameters(params);
     } catch (e) {
-        return reject(new SecretError('Not Found Secret'));
+        return reject(('Not Found Secret'));
     }
 
 });
@@ -63,7 +59,7 @@ const getSecret = key => new Promise(async (resolve, reject) => {
                 return resolve(result);
             }
 
-            throw new SecretError('Not Found Secret.');
+            throw ('Not Found Secret.');
         }
 
         await getAll();
@@ -74,11 +70,11 @@ const getSecret = key => new Promise(async (resolve, reject) => {
             if (result) {
                 return resolve(result);
             }
-            return reject(new SecretError('Not Found Secret!'));
+            return reject(('Not Found Secret!'));
         }
     } catch (e) {
-        return reject(new SecretError('Not Found Secret'));
+        return reject(('Not Found Secret'));
     }
 });
 
-export { getSecret, getAll };
+module.exports = { getSecret, getAll };

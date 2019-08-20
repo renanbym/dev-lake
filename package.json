@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "npm install; cd src/services; SLS_DEBUG=* sls deploy --stage=dev -v --aws-profile renanbym"
+    "deploy": "npm install; cd src/services; SLS_DEBUG=* sls deploy --stage=dev -v --aws-profile renanbym",
+    "remove": "npm install; cd src/services; SLS_DEBUG=* sls remove --stage=dev -v --aws-profile renanbym"
   },
   "author": "",
   "license": "ISC",
