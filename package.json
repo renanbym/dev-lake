@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "app-root-path": "^2.2.1",
+    "aws-sdk": "^2.514.0",
     "babel-cli": "^6.26.0",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
@@ -32,12 +33,12 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "^1.7.0",
+    "serverless": "^1.50.0",
     "serverless-offline": "^5.10.1",
     "serverless-prune-plugin": "^1.4.0",
     "serverless-pseudo-parameters": "^2.4.0",
     "serverless-webpack": "^5.3.1",
     "webpack": "^4.39.2",
-    "webpack-node-externals": "^1.7.2",
-    "serverless": "^1.50.0"
+    "webpack-node-externals": "^1.7.2"
   }
 }
