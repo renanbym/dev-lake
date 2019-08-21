@@ -1,7 +1,7 @@
 {
   "name": "crawling",
   "version": "1.0.0",
-  "description": "https://www.linkedin.com/pulse/how-easy-scraping-data-from-linkedin-profiles-david-craven/ https://python.gotrained.com/page/3/",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
