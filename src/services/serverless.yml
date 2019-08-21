@@ -31,37 +31,30 @@ provider:
 
 plugins:
   - serverless-offline
+  - serverless-webpack
+  - serverless-pseudo-parameters
 
 custom:
 
+  webpack:
+    webpackConfig: ../../webpack.config.js
+    includeModules:
+      packagePath: '../../package.json'
+      forceExclude:
+        - aws-sdk
+
 package:
-  individually: true
-  include:
-    - ../../node_modules/**
-    - ../_core/**
-    - ../models/**
+  individually: ${file(../../config.yml):packageIndidually}
 
 functions:
 
-  ping:
-    handler: services/ping.handler
-    events:
-      - http:
-          path: /ping
-          method: get
-          cors: true
-          request:
-            parameters:
-              paths:
-                id: true
-              headers:
-                Authorization: true
-             
-  build:
-    handler: build.handler
-
   searchGoogle:
     handler: search-google.handler
+    events:
+      - http: 
+          path: /search-google
+          method: post
+          cors: true
 
   updateProfile:
     handler: update-profile.handler
@@ -69,7 +62,7 @@ functions:
     reservedConcurrency: 20
     events:
       - sqs:
-          arn: arn:aws:sqs:us-east-1:${file(../../config/config.yml):ACCOUNT}:updateProfileQueue
+          arn: arn:aws:sqs:us-east-1:${file(../../config.yml):ACCOUNT}:updateProfileQueue
           batchSize: 1  
 
   getOneProfile:

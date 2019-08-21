@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-
-const schema = new mongoose.Schema(
+import mongoose, { Schema } from 'mongoose';
+mongoose.Promise = require('bluebird');
+const modelSchema = new Schema(
     {
         position: { type: String, require: true },
         location: { type: String, require: true },
@@ -9,4 +9,5 @@ const schema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model('Search', schema);
+global.modelSchema = global.modelSchema || mongoose.model('Search', modelSchema);
+module.exports = global.modelSchema;

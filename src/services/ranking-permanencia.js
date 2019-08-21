@@ -1,5 +1,5 @@
-const { connect } = require('./_core/connection')
-const Perfil = require('./models/Perfil')
+const { connect } = require('../_core/connection')
+const Perfil = require('../models/Perfil')
 const { ObjectId } = require('mongodb')
 const { format, formatDistance, formatRelative, subDays, differenceInDays } = require('date-fns')
 

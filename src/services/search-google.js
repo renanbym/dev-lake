@@ -1,7 +1,7 @@
 const google = require('google-it')
-const { connect } = require('./_core/connection')
-const Perfil = require('./models/Perfil')
-const { requestQueue } = require('./_core/aws-build-request');
+const { connect } = require('../_core/connection')
+const Perfil = require('../models/Perfil')
+const { requestQueue } = require('../_core/aws-build-request');
 
 const parseBody = (event) => {
 

@@ -1,8 +1,8 @@
 const scrapedin = require('scrapedin')
-const { connect } = require('./_core/connection')
-const Perfil = require('./models/Perfil')
+const { connect } = require('../_core/connection')
+const Perfil = require('../models/Perfil')
 const { ObjectId } = require('mongodb')
-const { getSecret } = require('./secrets-storage');
+const { getSecret } = require('../_core/secrets-storage');
 
 
 const handler = async (event, context, callback) => {

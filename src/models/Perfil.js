@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-
-const modelSchema = new mongoose.Schema({
+import mongoose, { Schema } from 'mongoose';
+mongoose.Promise = require('bluebird');
+const modelSchema = new Schema({
     url: { type: String, require: true, index: { unique: true } },
     status: { type: String, enum: ['created', 'updated', 'modernize'], require: true },
     name: String,
@@ -50,4 +50,5 @@ const modelSchema = new mongoose.Schema({
     update: { type: Date, default: Date.now },
 })
 
-module.exports = mongoose.model('Perfil', modelSchema);
+global.modelSchema = global.modelSchema || mongoose.model('Perfil', modelSchema);
+module.exports = global.modelSchema;

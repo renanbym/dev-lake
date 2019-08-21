@@ -1,0 +1,15 @@
+{
+    "presets": [
+      ["env", {
+        "targets": {
+          "node": "8.10"
+        }
+      }]
+    ],
+  
+    "plugins": [
+      ["inline-json-import", {}],
+      "transform-runtime",
+      "transform-object-rest-spread"
+    ]
+  }
