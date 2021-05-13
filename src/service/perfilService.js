@@ -13,6 +13,10 @@ class PerfilService {
         return this.repository.create( data )
     }
 
+    async update(id, data){
+        return this.repository.update( data )
+    }
+
 }
 
 module.exports = PerfilService

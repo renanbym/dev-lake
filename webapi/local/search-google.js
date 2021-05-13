@@ -1,55 +1,61 @@
-const google = require('google-it')
+const google = require('google-it');
+const { exec } = require("child_process");
 
 const PerfilFactory = require("../../src/factories/perfilFactory")
 const PerfilService = PerfilFactory.generateInstance()
-const Perfil = require("../../src/entities/perfil")
-const Search = require("../../src/entities/search")
+
+const QueueFactory = require("../../src/factories/queueFactory")
+const QueueService = QueueFactory.generateInstance()
+
+const Perfil = require("../../src/entities/perfil");
+const Search = require("../../src/entities/search");
+
 
 const handler = async () => {
-  try {
-    console.log('handler')
 
-    const data = { position: "Cloud", location: "Lisbon" }
-    console.log(data)
+  const data = { position: "Cloud", location: "Lisbon" }
 
-  
-    const googleSearch = await google({ 'no-display': true, 'only-urls': true, 'limit': 100, 'query': `site:linkedin.com/in/ AND "${data.position}" AND "${data.location}"` }).catch(err =>   console.log(err) )
-    
-    const options = {
-      'proxy': 'http://localhost:8118'
-    };
-
-    google({ options, 'query': `"${data.position}" AND "${data.location}"` }).then(results => {
-      console.log('results', results)
-    }).catch(e => {
-      console.log('e', e)
-    })
-
-      
-    console.log('googleSearch', googleSearch)
- 
-    const create = async (url) => {
-      console.log('create')
-
-      const search = new Search(data)
-      const perfil = new Perfil({ url: url, search })
-
-      PerfilService.create(perfil);
-  
-      // await requestQueue({ id: dataPerfil._id }, 'updateProfileQueue');
+  const query = `site:linkedin.com/in/ AND "${data.position}" AND "${data.location}"`
+  console.log(query)
+  exec(`google-it --query="${query}" --only-urls`, (error, stdout, stderr) => {
+    if (error) {
+      console.log(`error: ${error.message}`);
+      return;
     }
-
-    for (const url of googleSearch) {
-      console.log(url)
-      if (/^https?\:\/\/[a-z]{0,2}?\.linkedin\.com\/in\//.test(url.link)) {
-        await create(url.link)
-      }
-
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
     }
+    console.log(`stdout: ${stdout}`);
+  });
 
-  } catch (error) {
-    console.log(`errors ${error}`)
-  }
+  // const googleSearch = await google({ 'no-display': true, 'only-urls': true, 'limit': 100, query }).catch(err => console.log(err));
+
+  // console.log('googleSearch', googleSearch)
+
+  // const create = async (url) => {
+  //   console.log('create')
+
+  //   const search = new Search(data)
+  //   const perfil = new Perfil({ url: url, search })
+
+  //   PerfilService.create(perfil);
+
+  //   // QueueService.sendToQueue("perfil", Object.assign(perfil))
+  // }
+
+  // for (const url of googleSearch) {
+  //   console.log(url)
+  //   if (/^https?\:\/\/[a-z]{0,2}?\.linkedin\.com\/in\//.test(url.link)) {
+  //     await create(url.link)
+  //   }
+
+  // }
+
 }
 
-handler()
+try {
+  handler();
+} catch (error) {
+  console.log(error)
+}
