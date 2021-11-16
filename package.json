@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "app-root-path": "^2.2.1",
-    "aws-sdk": "^2.514.0",
+    "aws-sdk": "^2.814.0",
     "babel-cli": "^6.26.0",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
